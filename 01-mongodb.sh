@@ -29,5 +29,5 @@ function VALIDATE(){
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Adding Mongo repo"
 
-dnf intall mongodb-org -y &>> $LOG_FILE
+dnf install mongodb-org -y &>> $LOG_FILE
 VALIDATE $? "Installing Mongo DB"
