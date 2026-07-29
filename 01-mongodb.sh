@@ -13,7 +13,7 @@ G="\e[31m"
 Y="\e[31m"
 N="\e[0m"
 
-if [ USERID -ne 0 ]; then
+if [ $USERID -ne 0 ]; then
     echo -e "$R Please run with root access $N" | tee -a $LOG_FILE
     exit 1
 fi
