@@ -33,6 +33,7 @@ get_instance_id (){
 }
 for instance in $@
 do
+    echo "passing instance : $instance"
     INSTANCE_ID=$(get_instance_id $instance)
     echo "existing instance : $INSTANCE_ID"
     if [ $ACTION == "create" ]; then
