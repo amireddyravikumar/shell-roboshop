@@ -21,6 +21,7 @@ shift
 if [ "$ACTION" != "create" ] && [ "$ACTION" != "delete" ] ; then
     echo -e "$R ERROR..First argument must be either create or delete $N"
     echo "USAGE: $0 [create/delete] [instance1] [instance2] ..."
+    exit 1
 fi
 get_instance_id (){
     name=$1
