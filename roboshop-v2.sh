@@ -34,6 +34,7 @@ get_instance_id (){
 for instance in $@
 do
     INSTANCE_ID=$(get_instance_id $instance)
+    echo "existing instance : $INSTANCE_ID"
     if [ $ACTION == "create" ]; then
         if [ $INSTANCE_ID == "None" ]; then
             INSTANCE_ID=$(aws ec2 run-instances \
