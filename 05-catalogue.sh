@@ -32,7 +32,7 @@ dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing NodeJS:20"
 
 id roboshop &>>$LOG_FILE
-if [ $? -ne 0]; then
+if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop  &>>$LOG_FILE
     VALIDATE $? "Creating roboshop system user"
 else 
@@ -66,7 +66,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installed mongodb client" 
 
 INDEX=$(mongosh --host mongodb.amireddyravi.space --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
-if [ $INDEX -lt 0]; then
+if [ $INDEX -lt 0 ]; then
     mongosh --host mongodb.amireddyravi.space </app/db/master-data.js
 else 
     echo -e "Products already loaded ... $Y SKIPPING $N"
