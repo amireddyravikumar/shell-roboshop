@@ -67,7 +67,8 @@ VALIDATE $? "Installed mongodb client"
 
 INDEX=$(mongosh --host mongodb.amireddyravi.space --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
 if [ $INDEX -lt 0 ]; then
-    mongosh --host mongodb.amireddyravi.space </app/db/master-data.js
+    mongosh --host mongodb.amireddyravi.space </app/db/master-data.js &>>$LOG_FILE
+    VALIDATE $? "Load Products"
 else 
     echo -e "Products already loaded ... $Y SKIPPING $N"
 fi
