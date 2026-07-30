@@ -7,6 +7,7 @@ sudo chmod -R 755 $LOGS_FOLDER
 LOG_FILE="$LOGS_FOLDER/$0.log"
 TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 SCRIPT_DIR=$PWD
+MYSQL_HOST=mysql.amireddyravi.space
 
 USERID=$(id -u)
 R="\e[31m"
@@ -61,6 +62,15 @@ VALIDATE $? "created systemctl service"
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "created MySql Client"
 
-# systemctl enable cart &>>$LOG_FILE
-# systemctl restart cart &>>$LOG_FILE
-# VALIDATE $? "Restarting cart"
+mysql -h mysql.amireddyravi.space -uroot -pRoboShop@1 -e "use cities" &>>$LOG_FILE
+if [ $? -ne 0 ]; then
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
+    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql
+    VALIDATE $? "Required Data loaded"
+else 
+    echo -e "Data already loaded.. $Y SKIPPING $N"
+fi
+systemctl enable shipping &>>$LOG_FILE
+systemctl restart shipping &>>$LOG_FILE
+VALIDATE $? "Enabled and Restarted shipping"
