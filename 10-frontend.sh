@@ -43,9 +43,9 @@ VALIDATE $? "Downloaded and extracted fronend code"
 
 rm -rf /etc/nginx/nginx.conf
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
-VALIDATE $? "COpied robosop nginx conf"
+VALIDATE $? "Copied robosop nginx conf"
  
 
 systemctl enable nginx &>>$LOG_FILE
 systemctl restart nginx &>>$LOG_FILE
-VALIDATE $? "ENabled and Restarted NGINX"
+VALIDATE $? "Enabled and Restarted NGINX"
