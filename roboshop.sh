@@ -11,7 +11,7 @@ do
         --image-id ami-0220d79f3f480ecf5 \
         --instance-type t3.micro \
         --security-groups "roboshop-common" "roboshop-$instance" \
-        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value="roboshop-$instance"}]' \
+        --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value="roboshop-$instance"}]" \
         --query 'Instances[0].InstanceId' \
         --output text
     )
@@ -20,7 +20,7 @@ do
     if [ $instance = "frontend" ]; then
        IP=$(aws ec2 describe-instances \
             --instance-ids $INSATACE_ID \
-            --query 'Reservations[0].Instances[0].PublicIpAddress' \
+            --query "Reservations[0].Instances[0].PublicIpAddress" \
             --output text
         )
         R53_RECORD="$DOMAIN_NAME"
