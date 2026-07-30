@@ -7,7 +7,7 @@ DOMAIN_NAME="amireddyravi.space"
 for instance in $@
 do 
     echo "Launching instance :$instance"
-    INSATACE_ID=$(aws ec2 run-instances \
+    INSTANCE_ID=$(aws ec2 run-instances \
         --image-id $AMI_ID \
         --instance-type t3.micro \
         --security-groups "roboshop-common" "roboshop-$instance" \
@@ -15,18 +15,18 @@ do
         --query 'Instances[0].InstanceId' \
         --output text
     )
-    echo "instance Id:$INSATACE_ID"
+    echo "instance Id:$INSTANCE_ID"
 
     if [ $instance = "frontend" ]; then
        IP=$(aws ec2 describe-instances \
-            --instance-ids $INSATACE_ID \
+            --instance-ids $INSTANCE_ID \
             --query "Reservations[0].Instances[0].PublicIpAddress" \
             --output text
         )
         R53_RECORD="$DOMAIN_NAME"
     else 
         IP=$(aws ec2 describe-instances \
-            --instance-ids $INSATACE_ID \
+            --instance-ids $INSTANCE_ID \
             --query "Reservations[0].Instances[0].PrivateIpAddress" \
             --output text
         )

@@ -53,14 +53,14 @@ do
         # updated route 53 record
             if [ $instance = "frontend" ]; then
                 IP=$(aws ec2 describe-instances \
-                        --instance-ids $INSATACE_ID \
+                        --instance-ids $INSTANCE_ID \
                         --query "Reservations[0].Instances[0].PublicIpAddress" \
                         --output text
                     )
                     R53_RECORD="$DOMAIN_NAME"
                 else 
                     IP=$(aws ec2 describe-instances \
-                        --instance-ids $INSATACE_ID \
+                        --instance-ids $INSTANCE_ID \
                         --query "Reservations[0].Instances[0].PrivateIpAddress" \
                         --output text
                     )
