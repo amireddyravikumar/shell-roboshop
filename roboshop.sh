@@ -4,7 +4,7 @@ AMI_ID="ami-0220d79f3f480ecf5"
 ZONE_ID="Z02709521C0H67BW0WAUD"
 DOMAIN_NAME="amireddyravi.space"
 
-for instance in #@
+for instance in $@
 do 
     echo "Launching instance :$instance"
     INSATACE_ID=$(aws ec2 run-instances \
