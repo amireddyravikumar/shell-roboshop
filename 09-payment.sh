@@ -27,7 +27,7 @@ function VALIDATE(){
         echo -e "$TIMESTAMP [INFO] $2... $G SUCCESS $N" | tee -a $LOG_FILE
     fi
 }
-ddnf install python3 gcc python3-devel -y &>>$LOG_FILE
+dnf install python3 gcc python3-devel -y &>>$LOG_FILE
 VALIDATE $? "Installing python"
 
 id roboshop &>>$LOG_FILE
