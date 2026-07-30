@@ -25,6 +25,7 @@ function VALIDATE(){
         echo -e "$TIMESTAMP [INFO] $2... $G SUCCESS $N" | tee -a $LOG_FILE
     fi
 }
+cp rabbitmq.repo vim /etc/yum.repos.d/rabbitmq.repo
 dnf install rabbitmq-server -y | &>> $LOG_FILE
 VALIDATE $? "Installing RabbitMQ Server"
 

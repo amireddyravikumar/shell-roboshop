@@ -28,7 +28,8 @@ function VALIDATE(){
 dnf install mysql-server -y &>> $LOG_FILE
 VALIDATE $? "Installing MySql Server"
 
-systemctl enable --now mysqld  &>> $LOG_FILE
+systemctl enable mysqld &>> $LOG_FILE
+systemctl start mysqld &>> $LOG_FILE  
 VALIDATE $? "starting and enabling MySql Server"
 
 mysql_secure_installation --set-root-pass RoboShop@1
