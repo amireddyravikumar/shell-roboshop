@@ -51,44 +51,51 @@ do
             echo "roboshop-$instance alredy running: $INSTANCE_ID"
         fi
         # updated route 53 record
-            if [ $instance = "frontend" ]; then
+        if [ $instance = "frontend" ]; then
+            IP=$(aws ec2 describe-instances \
+                    --instance-ids $INSTANCE_ID \
+                    --query "Reservations[0].Instances[0].PublicIpAddress" \
+                    --output text
+                )
+                R53_RECORD="$DOMAIN_NAME"
+            else 
                 IP=$(aws ec2 describe-instances \
-                        --instance-ids $INSTANCE_ID \
-                        --query "Reservations[0].Instances[0].PublicIpAddress" \
-                        --output text
-                    )
-                    R53_RECORD="$DOMAIN_NAME"
-                else 
-                    IP=$(aws ec2 describe-instances \
-                        --instance-ids $INSTANCE_ID \
-                        --query "Reservations[0].Instances[0].PrivateIpAddress" \
-                        --output text
-                    )
-                    R53_RECORD="$instance.$DOMAIN_NAME"
-                fi
-                echo "IP: $IP"
+                    --instance-ids $INSTANCE_ID \
+                    --query "Reservations[0].Instances[0].PrivateIpAddress" \
+                    --output text
+                )
+                R53_RECORD="$instance.$DOMAIN_NAME"
+            fi
+            echo "IP: $IP"
 
-                aws route53 change-resource-record-sets \
-                        --hosted-zone-id $ZONE_ID \
-                        --change-batch '
-                            {
-                                "Comment": "Update A Record with new IP",
-                                "Changes": 
-                                [{
-                                    "Action": "UPSERT",
-                                    "ResourceRecordSet": 
-                                    {
-                                        "Name": "'$R53_RECORD'",
-                                        "Type": "A",
-                                        "TTL": 1,
-                                        "ResourceRecords":
-                                        [{
-                                            "Value": "'$IP'"
-                                        }]
-                                    }
-                                }]
-                            }
-                        '
-            echo "Route 53 record is updated for $instance"
+            aws route53 change-resource-record-sets \
+                    --hosted-zone-id $ZONE_ID \
+                    --change-batch '
+                        {
+                            "Comment": "Update A Record with new IP",
+                            "Changes": 
+                            [{
+                                "Action": "UPSERT",
+                                "ResourceRecordSet": 
+                                {
+                                    "Name": "'$R53_RECORD'",
+                                    "Type": "A",
+                                    "TTL": 1,
+                                    "ResourceRecords":
+                                    [{
+                                        "Value": "'$IP'"
+                                    }]
+                                }
+                            }]
+                        }
+                    '
+        echo "Route 53 record is updated for $instance"
+    else 
+        if [ $INSTANCE_ID == "None" ]; then
+            echo "$instance is already deleted, nothing to do..."
+        else 
+            aws ec2 terminate-instances --instance-ids $INSTANCE_ID 
+            echo "Terminating Instance: $instance"    
+        fi
     fi        
 done
